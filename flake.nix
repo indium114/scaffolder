@@ -43,7 +43,7 @@
 
         apps.default = {
           type = "app";
-          program = "${self.packages.${pkgs.stdenv.hostPlatform.system}.scaffolder}/bin/scaffolder";
+          program = "${self.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/scaffolder";
         };
       });
 }
