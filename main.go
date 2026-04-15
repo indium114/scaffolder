@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -11,7 +10,10 @@ import (
 	"charm.land/huh/v2"
 )
 
-var selection string
+var (
+	selection string
+	git       bool
+)
 
 func copyFile(src, dst string, perm os.FileMode) error {
 	in, err := os.Open(src)
@@ -39,8 +41,7 @@ func clone() string {
 	repoDir := filepath.Join(tmpDir, "scaffolder")
 
 	cmd := exec.Command("git", "clone", "https://github.com/indium114/scaffolder", repoDir)
-	cmd.Stdout = os.Stdout
-	cmd.Stdin = os.Stdin
+	cmd.Stderr = os.Stderr
 
 	if err := cmd.Run(); err != nil {
 		log.Fatal(err)
@@ -55,6 +56,17 @@ func initialise(lang string) error {
 	dst, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	if git {
+		cmd := exec.Command("git", "init")
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+
+		err := cmd.Run()
+		if err != nil {
+			return err
+		}
 	}
 
 	return filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
@@ -86,6 +98,9 @@ func main() {
 					huh.NewOption("Go", "go"),
 				).
 				Value(&selection),
+			huh.NewConfirm().
+				Title("Initialise a Git repo?").
+				Value(&git),
 		),
 	)
 
