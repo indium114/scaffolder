@@ -23,7 +23,7 @@
           ];
         };
 
-        packages.spyglass = pkgs.buildGoModule {
+        packages.example = pkgs.buildGoModule {
           pname = "example"; # TODO: Change
           version = "0.0.0"; # TODO: Change
 
@@ -41,7 +41,7 @@
           };
         };
 
-        apps.spyglass = {
+        apps.example = {
           type = "app";
           program = "${self.packages.${pkgs.stdenv.hostPlatform.system}.example}/bin/example"; # TODO: Change
         };

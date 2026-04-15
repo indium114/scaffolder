@@ -23,7 +23,7 @@
           ];
         };
 
-        packages.spyglass = pkgs.buildGoModule {
+        packages.scaffolder = pkgs.buildGoModule {
           pname = "scaffolder";
           version = "2026.04.15-a";
 
@@ -41,7 +41,7 @@
           };
         };
 
-        apps.spyglass = {
+        apps.scaffolder = {
           type = "app";
           program = "${self.packages.${pkgs.stdenv.hostPlatform.system}.scaffolder}/bin/scaffolder";
         };
