@@ -45,4 +45,4 @@ jobs:
             extra-experimental-features = nix-command flakes
 
       - name: Build from flake
-        run: nix build .#example # TODO: Change
+        run: nix build .#scaffolder
