@@ -23,7 +23,7 @@
           ];
         };
 
-        packages.scaffolder = pkgs.buildGoModule {
+        packages.default = pkgs.buildGoModule {
           pname = "scaffolder";
           version = "2026.04.15-a";
 
@@ -41,7 +41,7 @@
           };
         };
 
-        apps.scaffolder = {
+        apps.default = {
           type = "app";
           program = "${self.packages.${pkgs.stdenv.hostPlatform.system}.scaffolder}/bin/scaffolder";
         };
