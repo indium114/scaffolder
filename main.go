@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -11,12 +13,28 @@ import (
 
 var selection string
 
-func clone() {
+func copyFile(src, dst string, perm os.FileMode) error {
+	in, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+
+	out, err := os.OpenFile(dst, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, perm)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, in)
+	return err
+}
+
+func clone() string {
 	tmpDir, err := os.MkdirTemp("", "scaffolder-*")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer os.RemoveAll(tmpDir)
 
 	repoDir := filepath.Join(tmpDir, "scaffolder")
 
@@ -27,6 +45,36 @@ func clone() {
 	if err := cmd.Run(); err != nil {
 		log.Fatal(err)
 	}
+
+	return repoDir
+}
+
+func initialise(lang string) error {
+	repoDir := clone()
+	src := filepath.Join(repoDir, "scaffolds", selection)
+	dst, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		rel, err := filepath.Rel(src, path)
+		if err != nil {
+			return err
+		}
+
+		target := filepath.Join(dst, rel)
+
+		if info.IsDir() {
+			return os.MkdirAll(target, info.Mode())
+		}
+
+		return copyFile(path, target, info.Mode())
+	})
 }
 
 func main() {
@@ -42,6 +90,11 @@ func main() {
 	)
 
 	err := form.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = initialise(selection)
 	if err != nil {
 		log.Fatal(err)
 	}

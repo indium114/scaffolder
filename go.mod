@@ -1,4 +1,4 @@
-module github.com/indium114/scaffold
+module github.com/indium114/scaffolder
 
 go 1.26.2
 
