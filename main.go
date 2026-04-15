@@ -96,6 +96,7 @@ func main() {
 				Title("Choose a Language").
 				Options(
 					huh.NewOption("Go", "go"),
+					huh.NewOption("Lua (Neovim Plugin)", "lua-nvim"),
 				).
 				Value(&selection),
 			huh.NewConfirm().
