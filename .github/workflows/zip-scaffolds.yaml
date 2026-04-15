@@ -1,0 +1,29 @@
+name: Zip Scaffolds
+
+on:
+  push:
+    paths:
+      - 'scaffolds/**'
+  workflow_dispatch:
+
+jobs:
+  zip-scaffolds:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Create zips
+        run: |
+          mkdir -p zips
+          for dir in scaffolds/*/; do
+            name=$(basename "$dir")
+            zip -r "zips/${name}.zip" "$dir"
+          done
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: scaffold-zips
+          path: zips/*.zip
