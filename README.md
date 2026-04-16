@@ -11,3 +11,7 @@ nix run github:indium114/scaffolder
 ```
 
 Select your language, and start writing code!
+
+## Adding more Scaffolds
+
+To add a scaffold, please read the [Contributing Guidelines](/CONTRIBUTING.md)
