@@ -1,5 +1,7 @@
 # scaffolder
 
+![Preview image](assets/preview.png)
+
 *scaffolder* is a tool to initialise a project for various languages using Nix.
 
 ## Usage
