@@ -3,7 +3,7 @@
 ## Contributing a Scaffold
 
 To contribute a scaffold, it needs to meet the following requirements:
-- *Must* be in `/scaffolds/\<language name\>`
+- *Must* be in `/scaffolds/<language name>`
 - *Must* have a `flake.nix` file that outputs a devShell, package, and app
   - Except Swift because the Swift version in nixpkgs is outdated and broken
 - *Must* have a `.gitignore` to ignore `/.direnv`, `/result`, and the directory that the language's build system puts artifacts in
