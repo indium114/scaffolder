@@ -98,6 +98,7 @@ func main() {
 					huh.NewOption("Go", "go"),
 					huh.NewOption("Lua (Neovim Plugin)", "lua-nvim"),
 					huh.NewOption("Swift", "swift"),
+					huh.NewOption("Rust", "rust"),
 				).
 				Value(&selection),
 			huh.NewConfirm().
