@@ -6,11 +6,18 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs { inherit system; };
-      in {
+      in
+      {
         devShells.default = pkgs.mkShell {
           name = "go-devshell";
 
@@ -19,41 +26,38 @@
             ldc
             serve-d
             dfmt
+            dub-to-nix
           ];
         };
 
-        packages.example = pkgs.stdenv.mkDerivation {
+        packages.example = pkgs.buildDubPackage {
           pname = "example"; # TODO: Change
           version = "0.0.0"; # TODO: Change
 
           src = ./.;
 
-          nativeBuildInputs = [
-            pkgs.dub
-            pkgs.ldc
-          ];
-
-          buildPhase = ''
-            runHook preBuild
-
-            dub build --build=release
-
-            runHook postBuild
-          '';
+          dubLock = ./dub-lock.json;
 
           installPhase = ''
             runHook preInstall
 
             mkdir -p $out/bin
-            cp bin/example $out/bin/ # TODO: Change
+            cp example $out/bin/ # TODO: Change
 
             runHook postInstall
           '';
+
+          meta = {
+            description = "example"; # TODO: Change
+            homepage = "example"; # TODO: Change
+            licenses = pkgs.lib.licenses.unlicense; # TODO: Change
+          };
         };
 
         apps.example = {
           type = "app";
           program = "${self.packages.${pkgs.stdenv.hostPlatform.system}.example}/bin/example"; # TODO: Change
         };
-      });
+      }
+    );
 }
