@@ -17,6 +17,7 @@
           packages = with pkgs; [
             dub
             ldc
+            serve-d
           ];
         };
 
