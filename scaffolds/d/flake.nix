@@ -18,6 +18,7 @@
             dub
             ldc
             serve-d
+            dfmt
           ];
         };
 
