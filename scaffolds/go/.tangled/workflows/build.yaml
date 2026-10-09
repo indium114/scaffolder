@@ -1,0 +1,25 @@
+name: Build Go project
+
+when:
+  - event: [ "push" ]
+    branch: [ "main" ]
+  - event: [ "pull_request" ]
+    branch: [ "main" ]
+
+engine: "nixery"
+
+environment:
+  GOOS: "linux"
+  GOARCH: "x86_64"
+
+dependencies:
+  nixpkgs/nixpkgs-unstable:
+    - go
+    - gotools
+    - just
+
+steps:
+  - name: "Build"
+    command: "go build -v"
+  - name: "Nix Build"
+    command: "nix build .#example" # TODO: Change
