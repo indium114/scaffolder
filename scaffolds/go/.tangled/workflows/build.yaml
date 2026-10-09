@@ -10,7 +10,7 @@ engine: "nixery"
 
 environment:
   GOOS: "linux"
-  GOARCH: "x86_64"
+  GOARCH: "amd64"
 
 dependencies:
   nixpkgs/nixpkgs-unstable:
